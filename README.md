@@ -12,7 +12,7 @@
 
 ## 系统设计与架构
 
-![image-20261101131300434](C:\Users\李惠洲\AppData\Roaming\Typora\typora-user-images\image-20261101131300434.png)
+![程序流程](E:\WebProject\image\程序流程.png)
 
 整个程序的执行流程为：渲染器初始化、模型资源加载、场景创建、监听事件注册、场景资源上传、帧循环。
 
@@ -36,7 +36,7 @@
 
 ## 系统分层
 
-![image-20261101123028090](C:\Users\李惠洲\AppData\Roaming\Typora\typora-user-images\image-20261101123028090.png)
+![层级](E:\WebProject\image\层级.png)
 
 #### 核心层
 
