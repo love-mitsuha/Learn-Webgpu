@@ -1,4 +1,3 @@
-import {Camera} from "./state/camera.js";
 import {Model} from "./state/model.js";
 import {InputController} from "./interact/inputController.js";
 import {SystemManager} from "./System/systemManager.js";

@@ -1,6 +1,6 @@
 ## 项目信息
 
-基于webgpu实现的地图查看器——2026.10.31——v1.0
+基于webgpu实现的地图查看器——2026.11.2——v1.0
 
 ## 项目概述
 
@@ -9,6 +9,34 @@
 ## 背景与目的
 
 笔者在此前写过一个基于c++的软光栅器，有图形学的基础，但缺少软件设计的思想，因此v1.0版本对查看器的模块进行划分，确定从数据组织到图形渲染的标准化流程，目的是打好一个兼具扩展性与可维护性的框架。
+
+## 项目结构
+
+```
+WebProject
+├─ main.js
+├─ web.html
+├─ System // 系统层
+│  └─ systemManager.js
+├─ state // 场景层
+│  ├─ camera.js
+│  ├─ model.js
+│  └─ scene.js
+├─ render // 渲染层
+│  ├─ IDshader.js
+│  ├─ renderer.js
+│  └─ shader.js
+├─ interact // 交互层
+│  └─ inputController.js
+├─ core // 核心层
+│  └─ math.js
+└─ application // 应用层
+   ├─ loader.js
+   └─ scaleBar.js
+
+```
+
+
 
 ## 系统设计与架构
 
@@ -36,7 +64,7 @@
 
 ## 系统分层
 
-![层级](./image/层级.png)
+<img src="./image/层级.png" alt="层级" style="zoom:80%;" />
 
 #### 核心层
 
