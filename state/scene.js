@@ -1,4 +1,6 @@
 import {Camera} from "./camera.js";
+import {Model} from "./model.js";
+import {Loader} from "../core/loader.js";
 export class Scene {
     static instance=null;
     constructor() {
@@ -6,6 +8,7 @@ export class Scene {
             return Scene.instance;
         }
         Scene.instance=this;
+        this.loader=Loader.getInstance();
 
         this.models = [];
         this.camera = new Camera();;
@@ -52,6 +55,16 @@ export class Scene {
         this.models[this.selectedModelID].translate(worldX, worldZ);
     }
 
+    async addModel(ObjURL,TextureURL=null){
+        const model=new Model();
+        await this.loader.loadModel(model,ObjURL);
+        if (TextureURL!=null) {
+            await this.loader.loadTexture(model,TextureURL);
+        }
+        this.models.push(model);
+        model.id=this.globalID++;
+    }
+
     rotateModel(deltaX){
         this.models[this.selectedModelID].rotate(deltaX);
     }
@@ -62,11 +75,6 @@ export class Scene {
 
     updateSelectedModelID(modelID){
         this.selectedModelID=modelID;
-    }
-
-    addModel(model) {
-        this.models.push(model);
-        model.id=this.globalID++; // 为每个物体分配ID
     }
 
     removeModel(model) {
