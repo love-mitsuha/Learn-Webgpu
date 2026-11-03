@@ -66,13 +66,23 @@ export class InputController {
                 this.scene.scaleModel(deltaY);
             }
         }
+        else{
+            this.moveCamera(event);
+        }
         this.lastX=event.clientX;
         this.lastY=event.clientY;
     }
 
+    moveCamera(event){
+        const deltaX=event.clientX-this.lastX;
+        const deltaY=event.clientY-this.lastY;
+        this.scene.moveCamera(deltaX,deltaY);
+        this.lastX=event.clientX;
+        this.lastY=event.clientY;
+    }
 
     // 移动
-    moveCamera(event) {
+    rotateCamera(event) {
         const deltaX=event.clientX-this.lastX;
         const deltaY=event.clientY-this.lastY;
         // 右键拖动：旋转相机

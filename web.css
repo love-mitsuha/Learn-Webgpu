@@ -1,0 +1,32 @@
+#container {
+    position: relative;
+    width: 1600px;
+    height: 900px;
+}
+
+#renderer {
+    display: block;
+    width: 1600px;
+    height: 900px;
+}
+
+#scale-bar {
+    position: absolute;
+    left: 50px;
+    bottom: 50px;
+    z-index: 10;
+
+    color: rgb(0, 0, 0);
+    font: 14px Arial;
+    pointer-events: none;
+}
+
+#scale-label {
+    margin-bottom: 5px;
+}
+
+#scale-line {
+    width: 100px;
+    height: 4px;
+    background: rgb(0, 0, 0);
+}

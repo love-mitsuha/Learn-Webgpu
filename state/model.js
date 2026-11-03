@@ -39,7 +39,7 @@ export class Model{
     }
 
     // 平移地图
-    translate(deltaX, deltaY) {
+    translate(deltaX,deltaY) {
         const x=deltaX;
         const z=-deltaY;
 

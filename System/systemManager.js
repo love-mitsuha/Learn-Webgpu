@@ -8,6 +8,12 @@ export class SystemManager {
         this.isDraggingCamera = false;
         this.isDraggingModel = false;
 
+        // 判断选择还是拖动逻辑
+        this.mouseDownX = 0;
+        this.mouseDownY = 0;
+        this.isDragging = false;
+        this.dragThreshold = 5;
+
         this.registerEvents();
     }
 
@@ -16,10 +22,6 @@ export class SystemManager {
         const canvas = this.canvas;
 
         // 鼠标事件
-        canvas.addEventListener("click",event =>{
-            controller.selectModel(event);
-            this.renderer.pickModel();
-        });
         canvas.addEventListener("contextmenu", event => {
             controller.onContextMenu(event);
         });
@@ -27,6 +29,9 @@ export class SystemManager {
         canvas.addEventListener("mousedown", event => {
             if (event.button===0) {
                 this.isDraggingModel=true;
+                this.mouseDownX=event.clientX;
+                this.mouseDownY=event.clientY;
+                this.isDragging=false;
             }else if(event.button===2){
                 this.isDraggingCamera=true;
             }
@@ -35,11 +40,17 @@ export class SystemManager {
 
         // 移动和释放放在 window 上，避免拖出画布后中断
         window.addEventListener("mousemove", event => {
+            const deltaX=event.clientX-this.mouseDownX;
+            const deltaY=event.clientY-this.mouseDownY;
+            if (Math.sqrt(deltaX*deltaX+deltaY*deltaY)>this.dragThreshold) {
+                this.isDragging=true;
+            }
             if (this.isDraggingModel) {
                 controller.moveModel(event);
             }else if(this.isDraggingCamera){
-                controller.moveCamera(event);
+                controller.rotateCamera(event);
             }
+
         });
 
         window.addEventListener("mouseup", event => {
@@ -47,6 +58,10 @@ export class SystemManager {
                 this.isDraggingModel=false;
             }else if(event.button===2){
                 this.isDraggingCamera=false;
+            }
+            if (event.button===0&&!this.isDragging) {
+                controller.selectModel(event);
+                this.renderer.pickModel();
             }
             controller.release(event);
         });

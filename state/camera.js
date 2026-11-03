@@ -14,7 +14,7 @@ export class Camera {
         // 成像参数
         this.fov = degToRad(60);
         this.near = 0.1;
-        this.far = 1000;
+        this.far = 10000;
         this.aspect=16/9;
 
         // 相机位置与矩阵
@@ -26,7 +26,7 @@ export class Camera {
         this.projectionMatrix = mat4.identity();
         
         // 旋转角度限制
-        this.minPitch = degToRad(-89);
+        this.minPitch = degToRad(30);
         this.maxPitch = degToRad(89);
 
         // gpu端参数
@@ -52,7 +52,11 @@ export class Camera {
         const y = this.distance * Math.sin(this.pitch);
         const z = hori * Math.cos(this.yaw);
 
-        this.eye = vec3.create(x,y,z);
+        this.eye = vec3.create(
+            this.target[0] + x,
+            this.target[1] + y,
+            this.target[2] + z
+        );
     }
 
     updateCameraView() {
@@ -82,6 +86,23 @@ export class Camera {
         this.projectionMatrix=mat4.perspective(this.fov,this.aspect,this.near,this.far);
     }
 
+    move(deltaX, deltaY) {
+        const moveSpeed = this.distance * 0.001;
+
+        // XZ平面内移动
+        const right=vec3.create(Math.cos(this.yaw),0,-Math.sin(this.yaw));
+        const forward=vec3.create(-Math.sin(this.yaw),0,-Math.cos(this.yaw));
+
+        // 鼠标拖动时，观察目标向鼠标反方向移动
+        const moveRight = vec3.scale(right, -deltaX * moveSpeed);
+        const moveForward = vec3.scale(forward, deltaY * moveSpeed);
+
+        this.target = vec3.add(this.target, moveRight);
+        this.target = vec3.add(this.target, moveForward);
+
+        this.update();
+    }
+
     rotate(deltaX, deltaY) {
         this.yaw -= deltaX;
         this.pitch -= deltaY;
@@ -96,12 +117,12 @@ export class Camera {
 
     zoom(deltaY){
         this.distance += deltaY;
-
         // 限制相机距离，避免距离为负数或过小
         this.distance = Math.max(
             0.1,
             Math.min(this.distance, 1000)
         );
+        this.update()
     }
 
 }

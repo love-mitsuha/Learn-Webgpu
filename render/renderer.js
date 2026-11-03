@@ -412,7 +412,7 @@ export class Renderer {
         // 所有模型共用的资源
         this.renderPass.setPipeline(this.pipeline);
         this.renderPass.setBindGroup(0,this.scene.camera.cameraBindGroup);
-        // 绘制每个模型
+        // 上传每个模型的绑定
         for(const model of this.scene.models){
             // 不同模型有不同的模型矩阵 所以每次要重新上传
             this.device.queue.writeBuffer(model.modelMatrixBuffer,0,model.modelMatrix);
@@ -449,7 +449,6 @@ export class Renderer {
         this.idRenderPass.setPipeline(this.idPipeline);
         this.idRenderPass.setBindGroup(0,this.scene.camera.cameraIDBindGroup);
         for(const model of this.scene.models){
-            this.device.queue.writeBuffer(model.modelMatrixBuffer,0,model.modelMatrix);
             this.idRenderPass.setBindGroup(1,model.modelIDBindGroup);
             this.idRenderPass.setVertexBuffer(0,model.vertexBuffer);
             this.idRenderPass.setBindGroup(2,model.idBindGroup);
